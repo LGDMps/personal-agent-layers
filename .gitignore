@@ -1,0 +1,25 @@
+# ---- Operating system junk ----
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# ---- Editor / IDE state ----
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+
+# ---- Logs and temporary files ----
+*.log
+*.tmp
+*.bak
+tmp/
+temp/
+.cache/
+
+# ---- Local scratch area (not part of the template) ----
+scratch/
