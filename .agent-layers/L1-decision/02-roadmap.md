@@ -1,7 +1,7 @@
 # L1 全局进度与任务排期表 (`02-roadmap.md`)
 
 > **文档属性与权限约束**：
-> - **层级归属**：`L1-decision`（全局任务状态面板，可与外部任务 DAG 工具的 `graph.json` 双向同步）
+> - **层级归属**：`L1-decision`（全局任务状态面板，可与外部任务 DAG 工具的 `graph.json` 双向同步；状态流转审计明细见同目录独立从属文件 [`02-roadmap-audit.md`](02-roadmap-audit.md)，日常默认不加载）
 > - **读写权限**：人类用户（读写）、`L1 决策层`（**读写**，负责拆解任务、更新状态、标记结项与归档）、`L2a / L2b / L3`（🚫 **严禁访问**，下层模型只关注被明确派发的单个 `<task-id>`）
 > - **任务五态定义**：
 >   - `planned`（待规划）：仅占位，尚未生成 `L2-dispatch/<task-id>/mandate.md`
@@ -27,6 +27,6 @@
 
 ---
 
-## 3. 状态流转审计简志 (State Audit Trail — Append-Only)
+## 3. 状态流转审计简志索引 (State Audit Trail Reference)
 
-- `[YYYY-MM-DD HH:mm] [L1]` 创建初始路线图，登记首个规划任务。
+- **状态审计明细**：已拆分为同目录独立从属文件 [`02-roadmap-audit.md`](02-roadmap-audit.md)（日常读取主文档时默认不加载；仅在 `L1` 更新任务状态同步追加审计记录或按需追溯时访问）。

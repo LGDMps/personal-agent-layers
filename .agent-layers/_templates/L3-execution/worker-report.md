@@ -2,15 +2,23 @@
 
 > **文档属性与权限约束**：
 > - **文件路径**：`.agent-layers/L3-execution/<TASK_ID>/worker-report.md`
-> - **更新模式**：**按执行轮次追加 (Append-per-Attempt)**。每次 `L3` 会话结束时，在末尾新增一个 `## Attempt N` 小节，严禁删改之前的 Attempt 记录。
+> - **更新模式**：**按执行轮次追加 (Append-per-Attempt)**。每次 `L3` 会话结束时，在末尾新增一个 `## Attempt N` 小节，最后一个完整 Attempt 小节代表最新执行状态，严禁删改历史小节。
 > - **读写权限**：`L3 执行层`（**仅追加**）、`L2b 调度审校 / L2a 主笔`（**只读**）、`L1 决策层`（🚫 **严禁访问**，只看 `L2/briefing.md`）
 
 ---
 
-## Attempt 1 — `<YYYY-MM-DD HH:mm>` (Worker Model: `<GLM-5.3 / Deepseek-V4.1-Flash / ...>`)
+## Attempt 1 — `<YYYY-MM-DD HH:mm>` (Worker Model: `<实际运行模型名称>`)
 
-### 1. 执行结论 (`Outcome`)
-- **状态**：`COMPLETED`（全部步骤与验证命令均通过） | `BLOCKED`（遇到阻塞，已按熔断规则停机）
+### 1. 执行状态与路由 (`Outcome & Routing`)
+- **Task-ID**：`<TASK_ID>`
+- **Phase**：`1`
+- **Attempt**：`1`
+- **Execution-Tier**：`L3-Standard`
+- **Status**：`COMPLETED`
+- **Next-Route**：`ROUTE_TO_L2B`
+- **Handled-By**：`<Host / Session Label>`
+<!-- Status 枚举：COMPLETED（全部步骤与验证命令均通过） | BLOCKED（遇到阻塞，已按熔断规则停机）
+     Next-Route 固定为：ROUTE_TO_L2B（交由 L2b 独立验收，L3 严禁自行宣布结项归档） -->
 
 ### 2. 分步完成核对 (Step Checklist)
 - [x] Step 1：...

@@ -10,9 +10,17 @@
 ## 1. 任务元信息 (Metadata)
 
 - **Task ID**：`<TASK_ID>`
+- **Phase**：`1`
+- **Session-Affinity**：`NONE`
 - **任务标题**：`<TASK_TITLE>`
 - **派发时间**：`<YYYY-MM-DD HH:mm>`
 - **前置依赖任务**：`<NONE 或 前置 Task ID 列表>`
+- **Execution-Tier**：`L3-Standard`
+- **Recommended-Model**：`<读取 .agent-layers/model-layers.md 中对应 Execution-Tier 的 Primary/Fallback 模型>`
+- **Heavy-Approval**：`NONE`
+
+<!-- Execution-Tier 枚举：L3-Standard（默认） | L3-Heavy（若由 L1 直接预批，须在 Heavy-Approval 填写：APPROVED_BY_L1 (<YYYY-MM-DD>, 指定高阶模型：<型号>)） -->
+<!-- Phase 默认为 1（若任务重开多期则在修订中递增）；Session-Affinity 可选填写前序/关联任务或阶段标签（如 FEAT-001 或 ARCH-001 Phase-1），供人工按 Session 复用策略（G1~G6）参考。 -->
 
 ---
 
@@ -52,3 +60,7 @@
 ## 6. 需求修订追加 (Amendments — Append-Only by L1)
 
 - *(暂无修订)*
+
+<!-- 若 L2b 提交 AWAITING_L1_HEAVY_APPROVAL 申请升档，L1/人类裁决后在此追加：
+- **[<YYYY-MM-DD HH:mm> L3-Heavy 升档审批]**：`APPROVED`（批准升档为 `L3-Heavy`，指定推荐模型：`<模型名>`） 或 `REJECTED`（维持 `L3-Standard`，理由：`...`）
+-->

@@ -2,7 +2,7 @@
 
 > **文档属性与权限约束**：
 > - **文件路径**：`.agent-layers/L2-internal/<TASK_ID>/draft-plan.md`
-> - **更新模式**：**轮次覆写 (Iterative Draft)**。由 `L2a 调度主笔`（推荐 `GPT-6.1-Sol`）在只读调研代码库后撰写；若被 `L2b` 打回（最多 1 次），在本文件基础上更新为 `Revision 2`。
+> - **更新模式**：**轮次覆写 (Iterative Draft)**。由 `L2a 调度主笔`（推荐读取 `.agent-layers/model-layers.md` 中 `L2a` 的 Primary/Fallback 模型）在只读调研代码库后撰写；若被 `L2b` 打回（最多 1 次），在本文件基础上更新为 `Revision 2`。
 > - **读写权限**：`L2a 调度主笔`（**读写**）、`L2b 调度审校`（**只读**）、`L1 决策层`（🔒 默认不读，防撑爆上下文）、`L3 执行层`（🚫 **绝对禁止访问**，防草稿与备选方案引发执行层 Worker 幻觉或上下文污染）
 
 ---
@@ -10,10 +10,18 @@
 ## 1. 版本与调研范围 (Revision & Investigation Scope)
 
 - **Task ID**：`<TASK_ID>`
+- **Phase**：`1`
+- **Session-Affinity**：`NONE`
 - **草案版本**：`Revision 1`
+- **Status**：`DRAFT_READY`
+- **Next-Route**：`ROUTE_TO_L2B`
+- **Proposed-Execution-Tier**：`L3-Standard`
+- **Heavy-Escalation-Reason**：`NONE`
 - **已检索核实的核心源码文件**：
   - `<path/to/file1>`：`<现有逻辑、关键函数签名与行号>`
   - `<path/to/file2>`：`<...>`
+
+<!-- Proposed-Execution-Tier 枚举：L3-Standard | L3-Heavy。若提议 L3-Heavy，必须在 Heavy-Escalation-Reason 说明为何 L3-Standard 无法胜任及拟申请的具体高阶模型；此字段仅为 L2a 提议，不构成批准，须由 L2b 审核后走 L1 审批门禁 -->
 
 ---
 

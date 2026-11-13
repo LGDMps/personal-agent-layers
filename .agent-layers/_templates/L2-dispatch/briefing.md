@@ -9,10 +9,22 @@
 
 ## 1. 结项状态摘要 (Executive Summary)
 
-- **Task ID**：`<TASK_ID>`
-- **当前汇总结论**：`READY_FOR_L1`（验收通过，待 L1 结项归档） | `BLOCKED_NEEDS_L1`（遇到战略/需求级卡点，需 L1 决策层或人类用户裁决）
-- **核心成果一句话总结（≤100字）**：
-  > `<简述最终完成了什么、效果如何>`
+- **Task-ID**：`<TASK_ID>`
+- **Phase**：`1`
+- **Status**：`READY_FOR_L1_ARCHIVE`
+- **Next-Route**：`READY_FOR_L1_ARCHIVE`
+- **Attempt**：`1`
+- **Execution-Tier**：`L3-Standard`
+- **Handled-By**：`<Host / Session Label>`
+- **Requested-Heavy-Model**：`NONE`
+- **Heavy-Escalation-Justification**：`NONE`
+- **核心结论一句话总结（≤100字）**：
+  > `<简述最终完成了什么、或为何申请升档/遇到何种阻塞>`
+
+<!-- Status 与 Next-Route 枚举（两者保持一致）：
+1. READY_FOR_L1_ARCHIVE：L2b 验收全部通过，请求 L1 合并 Delta 并归档（兼容识别旧标识 READY_FOR_L1）
+2. AWAITING_L1_HEAVY_APPROVAL：mandate 默认为 L3-Standard 但 L2 判定必须升档为 L3-Heavy，请求 L1/人类在 mandate.md 第 6 节审批（此时尚未执行 L3，Attempt=0，须填写 Requested-Heavy-Model 与 Heavy-Escalation-Justification）
+3. BLOCKED_NEEDS_L1：遇到战略/需求级冲突，或两轮审校/两轮异构 L3 执行均失败，请求 L1 裁决 -->
 
 ---
 
@@ -35,7 +47,7 @@
 
 ## 4. 架构与规范增量 (OpenSpec Deltas — 供 L1 合并回 `01-charter-and-specs.md`)
 
-> **说明**：请用 `ADDED` / `MODIFIED` / `REMOVED` 明确列出本次任务对全局架构规范（`L1-decision/01-charter-and-specs.md`）产生的持久性改变；若纯属局部实现且不影响全局架构，填写 `NONE`。
+> **说明**：请用 `ADDED` / `MODIFIED` / `REMOVED` 明确列出本次任务对全局架构规范（`L1-decision/01-charter-and-specs.md`）产生的持久性改变；若纯属局部实现且不影响全局架构，填写 `NONE`。若项目采用内外双仓拓扑，须分别注明「供 L1 合并入外层章程」与「已由 L3 落入 `framework` 的位置」，避免向已业务模板化的 `framework` 章程重复回写框架内部条文。
 
 - **`[ADDED]`**：...
 - **`[MODIFIED]`**：...

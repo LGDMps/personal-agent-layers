@@ -1,47 +1,54 @@
 # L1 项目整体架构与现状规范 (`01-charter-and-specs.md`)
 
 > **文档属性与权限约束**：
-> - **层级归属**：`L1-decision`（借鉴 OpenSpec 的 `project.md` + `specs/` 真相源模式）
-> - **读写权限**：人类用户（读写）、`L1 决策层`（**读写**，负责在任务结项时将 `L2/briefing.md` 中的 `Delta` 合并入本文档并记录 `Changelog`）、`L2a / L2b 调度层`（**只读**，作为技术方案设计的架构红线依据）、`L3 执行层 (Worker)`（🚫 **严禁访问**，所需上下文必须已由 `L2b` 内联进 `L3-execution/<task-id>/spec.md`）
-> - **更新铁律**：本文档永远只反映项目**当前已确立或已实现**的真实架构状态。每次修改必须在底部 `## 架构演进记录 (Changelog)` 登记变更摘要与关联的 `<task-id>`。
+> - **层级归属**：`L1-decision`（项目全局业务愿景与架构规范的唯一真相源 Living State）
+> - **Framework-Version**：`v0.1.1`（PAL 框架底座模板版本）
+> - **Charter-Status**：`UNINITIALIZED` <!-- 首次通过 /al1-decision 与人类完成业务目标对齐后，改为 INITIALIZED -->
+> - **Project-Name**：`<PROJECT_NAME>`
+> - **当前业务架构版本**：`v0.1.0-draft`（待首次 `/al1-decision` 会话确认后正式定版）
+> - **读写权限**：人类用户（读写）、`L1 决策层`（**读写**，负责首次初始化引导，并在任务结项时将 `L2/briefing.md` 中的业务架构 `Delta` 合并入本文档）、`L2a / L2b 调度层`（**只读**，作为技术方案设计的架构红线依据）、`L3 执行层 (Worker)`（🚫 **严禁访问**，所需上下文必须已由 `L2b` 内联进 `L3-execution/<task-id>/spec.md`）
+> - **更新铁律**：本文档永远只反映**目标业务项目**当前已确立或已实现的真实架构状态。每次修改必须同步更新顶部的“当前业务架构版本”，并在同目录独立历史从属文件 [`01-charter-changelog.md`](01-charter-changelog.md) 末尾追加变更摘要与关联 `<task-id>`（日常恢复上下文时默认不读取 `01-charter-changelog.md`）。
 
 ---
 
-## 1. 项目愿景与边界 (Project Charter)
+## 0. 框架底座运行约束引用 (Framework Invariants Reference)
 
-- **项目名称**：Personal Agent Layers（面向单项目的分层智能体工作流与多级文档隔离体系）
-- **核心目标**：
-  1. 依据基础模型能力差异实现职责分化（`L1 决策层`、`L2a/L2b 调度层双模型协作`、`L3 执行层 Worker`），最大化人类注意力价值并优化模型额度消耗。
-  2. 以仓库本地 `.agent-layers/` 多级文档作为跨 Session、跨 Harness 的唯一权威状态源（Single Source of Truth），彻底消除长会话腐化与二跳检索上下文爆炸问题。
-- **非目标（Out of Scope — 当前阶段）**：
-  - 暂不构建接管外部 IM / GitHub Webhook 的通用常驻守护架构；
-  - 严格限定在单个 Project / Workspace 仓库内部运作。
+> 本项目启用了 **Personal Agent Layers (PAL)** 分层智能体工作流。关于三层模型角色路由（`/al1-decision`、`/al2a-drafter`、`/al2b-reviewer`、`/al3-worker`）、`L3-Standard / L3-Heavy` 升档审批门禁、四区文档物理隔离、`Inline-or-Never` 零跳执行契约、显式流转状态机以及同角色 Session 复用策略（G1~G6）的全部框架级强制规范，**唯一权威落点为仓库根目录的 [`AGENTS.md`](../../AGENTS.md)（详见其 `## 3. 框架底座运行约束与全局铁律`）**。本文档下方仅承载**本项目自身的业务愿景与技术架构规范**。
 
 ---
 
-## 2. 核心架构规范 (Living Specifications)
+## 1. 项目愿景与业务边界 (Project Charter — 待首次 `/al1-decision` 初始化填充)
 
-### Spec-01：三层模型服务与职责边界
-- **[MUST]** 跨层级的任务委派（`L1 → L2a → L2b → L3 → L2b → L1`）必须通过创建全新的 Session 完成，严禁使用 `subagent` 跨层执行。
-- **[MUST]** `L1`、`L2a`、`L2b` 三个高层角色严禁直接修改业务源码，仅允许读写各自权限范围内的 `.agent-layers/` 文档；业务源码的修改权由 `L3 执行层 (Worker)` 独占。
-- **[MUST]** 每次跨层交接时，当前 Session 必须生成自包含的【跨 Harness 人工转接指令块】，支持人类用户在任意外部 Harness 软件中直接粘贴启动下一层 Session。
+> **初始化提示**：当 `Charter-Status` 为 `UNINITIALIZED`（或 `Project-Name` 仍为 `<PROJECT_NAME>`）时，`L1 决策层` 在首次 `/al1-decision` 会话中应主动扫描仓库顶层结构并引导人类用户确认以下业务要素，填充完毕后将顶部 `Charter-Status` 更新为 `INITIALIZED`。
 
-### Spec-02：四区物理隔离与 Inline-or-Never 契约
-- **[MUST]** `.agent-layers/` 下设四个活跃文档区：
-  - `L1-decision/`：战略意图流、全局架构规范、全局排期表；
-  - `L2-dispatch/<task-id>/`：决策层下发的 `mandate.md` 与调度层向上汇总的 `briefing.md`；
-  - `L2-internal/<task-id>/`：调度层内部 `L2a` 初稿 (`draft-plan.md`) 与 `L2b` 审校记录 (`review-notes.md`)，对 `L1` 默认隐藏，对 `L3` 绝对不可见；
-  - `L3-execution/<task-id>/`：经 `L2b` 提炼定稿的自包含执行规约 (`spec.md`) 与 `L3` 执行汇报 (`worker-report.md`)。
-- **[MUST]** `L3-execution/<task-id>/spec.md` 必须自包含所有文件路径、接口签名、实现步骤与验证命令，使 `L3` 模型在零额外文档搜索（0-hop）的前提下完成工作。
-
-### Spec-03：Delta 回写与完工归档 (Archive Lifecycle)
-- **[MUST]** 任务在 `L2b` 验收通过后，必须在 `L2-dispatch/<task-id>/briefing.md` 中声明本次任务对架构规范产生的增量（`ADDED` / `MODIFIED` / `REMOVED`）。
-- **[MUST]** `L1 决策层` 审阅结项时，先将增量合并入本文件，随后将 `<task-id>` 在 `L2-dispatch`、`L2-internal`、`L3-execution` 下的目录统一移入 `.agent-layers/archive/<YYYY-MM-DD>-<task-id>/`。
+- **项目名称**：`<PROJECT_NAME>`
+- **项目定位与核心解决的问题**：
+  - `<待确认：一句话描述本项目面向什么用户/场景，解决什么核心业务或工程问题>`
+- **核心业务与工程目标 (In-Scope Goals)**：
+  1. `<目标 1：待人类与 L1 对齐后填入>`
+  2. `<目标 2：待人类与 L1 对齐后填入>`
+- **明确非目标与范围外事项 (Out of Scope)**：
+  - `<非目标 1：当前阶段明确不做的事项或外部边界>`
 
 ---
 
-## 3. 架构演进记录 (Changelog)
+## 2. 核心业务与技术架构规范 (Living Specifications — 待填充与持续演进)
 
-| 日期 | 版本 | 关联任务 ID | 变更类型 (`ADDED`/`MODIFIED`/`REMOVED`) | 变更内容摘要 | 经办层级 |
-| :-: | :-: | :-: | :-: | :--- | :---: |
-| `<YYYY-MM-DD>` | `v0.1.0` | `-` | `ADDED` | 初始基线：三层模型服务规范（Spec-01）、四区文档隔离规范（Spec-02）与归档生命周期（Spec-03） | `L1` |
+### Spec-01：技术栈、运行环境与工程约定 (Tech Stack & Conventions)
+- **[MUST]** **核心语言与框架**：`<待填充，如 TypeScript / Python / Rust / Go 等及版本约束>`
+- **[MUST]** **构建、测试与代码质量门禁命令**：`<待填充，如单元测试、类型检查、Linter 命令，供 L2b 内联进 L3 spec.md>`
+- **[MUST]** **目录结构与模块职责边界**：`<待填充，简述核心源码目录划分与依赖方向约束>`
+
+### Spec-02：核心领域模型与接口契约 (Core Domain & API Contracts)
+- **[MUST]** `<待随首个架构/功能任务结项通过 OpenSpec Delta 沉淀填入>`
+
+### Spec-03：安全、性能与外部依赖红线 (Security & Operational Constraints)
+- **[MUST]** `<待确认：如敏感配置管理、跨平台兼容性、性能基线或禁止引入的第三方依赖>`
+
+---
+
+## 3. 架构演进记录索引 (Changelog Reference)
+
+- **当前框架底座模板版本**：`v0.1.1`
+- **当前业务架构生效版本**：`v0.1.0-draft`（`UNINITIALIZED`）
+- **历史演进明细**：已拆分为同目录独立从属文件 [`01-charter-changelog.md`](01-charter-changelog.md)（日常读取主文档时默认不加载；仅在 `L1` 完成章程初始化或合并 Delta 追加记录、以及按需追溯历史时访问）。
